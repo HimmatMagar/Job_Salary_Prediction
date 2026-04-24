@@ -8,7 +8,7 @@ logging.basicConfig(
       format="[%(asctime)s: %(message)s]"
 )
 
-project_name = "job-salary-prediction"
+project_name = "jobSalaryPrediction"
 
 list_of_file = [
       f"src/{project_name}/__init__.py",

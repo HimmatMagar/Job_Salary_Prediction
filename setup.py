@@ -1,18 +1,18 @@
 from setuptools import setup, find_packages
 
-__version__ = '0.0.0'
+__version__ = '0.0.0.1'
 
-REPO_NAME = "Job-Salary-Prediction"
+REPO_NAME = "Job_Salary_Prediction"
 AUTHOR_USER_NAME = "HimmatMagar"
-SRC_REPO = "JobSalaryPrediction"
+SRC_REPO = "jobSalaryPrediction"
 AUTHOR_EMAIL = "himmatmagar007@gmail.com"
 
 setup(
-      name="JobSalaryPrediction",
+      name="jobSalaryPrediction",
       version=__version__,
       author=AUTHOR_USER_NAME,
       author_email=AUTHOR_EMAIL,
-      description="End to End ML Job Salary prediction Project implementation",
+      description="End to End Job Salary prediction Project implementation",
       long_description_content_type='text/markdown',
       url=f"https://github.com/{AUTHOR_USER_NAME}/{REPO_NAME}",
       project_urls = {
