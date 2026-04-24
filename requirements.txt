@@ -1,0 +1,15 @@
+pandas
+numpy
+matplotlib
+seaborn
+fastapi
+uvicorn
+pydantic
+scikit-learn
+torch
+mlflow
+dagshub
+dvc
+ensure
+python-box
+pyYAML
