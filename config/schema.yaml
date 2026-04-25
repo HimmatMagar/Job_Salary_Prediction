@@ -1,1 +1,14 @@
-key: value
+COLUMNS:
+  job_title: object
+  experience_years: int64
+  education_level: object
+  skills_count: int64
+  industry: object
+  company_size: object
+  location: object
+  remote_work: object
+  certifications: int64
+  salary: int64
+
+TARGET_COLUMN:
+  name: salary
