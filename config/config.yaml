@@ -2,6 +2,6 @@ artifact_dir: artifact
 
 data_ingestion:
   root_dir: artifact/data_ingestion
-  data_source: ""
+  data_source: "https://drive.google.com/uc?export=download&id=1SmXNvzqRwLkeyHwKVhbFSQ7BHp72d8F9"
   zip_file: artifact/data_ingestion/data.zip
   unzip_file: artifact/data_ingestion
