@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+      <title>Salary Predictor | AI Compensation Estimator</title>
+      <style>
+            * {
+                  margin: 0;
+                  padding: 0;
+                  box-sizing: border-box;
+                  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
+            }
+
+            body {
+                  background: linear-gradient(145deg, #e9eff7 0%, #dce3ec 100%);
+                  min-height: 100vh;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  padding: 2rem 1rem;
+            }
+
+            /* main card container */
+            .card {
+                  max-width: 950px;
+                  width: 100%;
+                  background: rgba(255, 255, 255, 0.96);
+                  backdrop-filter: blur(0px);
+                  border-radius: 2.5rem;
+                  box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.35), 0 4px 12px rgba(0, 0, 0, 0.05);
+                  overflow: hidden;
+                  transition: all 0.2s ease;
+            }
+
+            /* header */
+            .header {
+                  background: #1e2b3c;
+                  padding: 1.8rem 2rem;
+                  color: white;
+            }
+
+            .header h1 {
+                  font-size: 1.9rem;
+                  font-weight: 600;
+                  letter-spacing: -0.3px;
+                  display: flex;
+                  align-items: center;
+                  gap: 12px;
+            }
+
+            .header h1 span {
+                  background: #ffb347;
+                  font-size: 1.6rem;
+                  border-radius: 60px;
+                  padding: 0 12px;
+                  color: #1e2b3c;
+            }
+
+            .header p {
+                  margin-top: 8px;
+                  opacity: 0.8;
+                  font-weight: 450;
+                  font-size: 0.9rem;
+            }
+
+            /* two column layout for better grouping */
+            .form-container {
+                  padding: 2rem 2rem 1.5rem 2rem;
+            }
+
+            .grid-2col {
+                  display: grid;
+                  grid-template-columns: repeat(2, 1fr);
+                  gap: 1.5rem 2rem;
+            }
+
+            .full-width {
+                  grid-column: span 2;
+            }
+
+            .input-group {
+                  display: flex;
+                  flex-direction: column;
+                  gap: 0.5rem;
+            }
+
+            .input-group label {
+                  font-weight: 600;
+                  font-size: 0.85rem;
+                  text-transform: uppercase;
+                  letter-spacing: 0.5px;
+                  color: #2c3e44;
+            }
+
+            .input-group label i {
+                  font-style: normal;
+                  background: #eef2f5;
+                  padding: 2px 8px;
+                  border-radius: 30px;
+                  font-size: 0.7rem;
+                  margin-left: 8px;
+            }
+
+            input,
+            select {
+                  background: #f9fbfd;
+                  border: 1.5px solid #dce5ec;
+                  border-radius: 18px;
+                  padding: 12px 16px;
+                  font-size: 0.95rem;
+                  font-weight: 500;
+                  color: #1a2c38;
+                  transition: all 0.2s;
+                  outline: none;
+            }
+
+            input:focus,
+            select:focus {
+                  border-color: #ff914d;
+                  box-shadow: 0 0 0 3px rgba(255, 145, 77, 0.2);
+                  background: white;
+            }
+
+            /* numeric field hint */
+            input[type="number"] {
+                  -moz-appearance: textfield;
+            }
+
+            input[type="number"]::-webkit-inner-spin-button,
+            input[type="number"]::-webkit-outer-spin-button {
+                  opacity: 0.5;
+            }
+
+            /* result area */
+            .result-area {
+                  background: #f0f4f9;
+                  margin: 0.5rem 2rem 2rem 2rem;
+                  border-radius: 28px;
+                  padding: 1.5rem 1.8rem;
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  flex-wrap: wrap;
+                  gap: 1rem;
+                  border: 1px solid rgba(0, 0, 0, 0.05);
+            }
+
+            .salary-box {
+                  background: white;
+                  border-radius: 30px;
+                  padding: 0.8rem 1.6rem;
+                  box-shadow: 0 6px 12px -8px rgba(0, 0, 0, 0.1);
+                  flex: 2;
+                  min-width: 200px;
+            }
+
+            .salary-label {
+                  font-size: 0.75rem;
+                  font-weight: 600;
+                  text-transform: uppercase;
+                  color: #617b8b;
+                  letter-spacing: 1px;
+            }
+
+            .salary-value {
+                  font-size: 2.4rem;
+                  font-weight: 800;
+                  color: #1f4e6e;
+                  line-height: 1.2;
+                  word-break: break-word;
+            }
+
+            .salary-value small {
+                  font-size: 1rem;
+                  font-weight: 500;
+                  color: #5e7e91;
+            }
+
+            .btn-predict {
+                  background: #1f4e6e;
+                  border: none;
+                  padding: 14px 34px;
+                  border-radius: 40px;
+                  font-weight: 700;
+                  font-size: 1.1rem;
+                  color: white;
+                  cursor: pointer;
+                  transition: 0.2s;
+                  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                  letter-spacing: 0.3px;
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 10px;
+            }
+
+            .btn-predict:hover {
+                  background: #ff914d;
+                  transform: scale(1.02);
+                  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            }
+
+            .btn-predict:active {
+                  transform: scale(0.98);
+            }
+
+            .status-msg {
+                  font-size: 0.8rem;
+                  background: #e9ecef;
+                  border-radius: 40px;
+                  padding: 8px 16px;
+                  color: #2c3e44;
+                  font-weight: 500;
+                  flex: 1;
+                  text-align: center;
+            }
+
+            .error-msg {
+                  background: #ffe3e0;
+                  color: #c23d22;
+            }
+
+            footer {
+                  padding: 1rem 2rem 1.8rem 2rem;
+                  text-align: center;
+                  font-size: 0.7rem;
+                  color: #7f8f97;
+                  border-top: 1px solid #e2e8f0;
+                  margin-top: 0.5rem;
+            }
+
+            @media (max-width: 720px) {
+                  .grid-2col {
+                        grid-template-columns: 1fr;
+                        gap: 1.2rem;
+                  }
+
+                  .full-width {
+                        grid-column: span 1;
+                  }
+
+                  .result-area {
+                        flex-direction: column;
+                        align-items: stretch;
+                  }
+
+                  .btn-predict {
+                        justify-content: center;
+                  }
+            }
+      </style>
+</head>
+
+<body>
+
+      <div class="card">
+            <div class="header">
+                  <h1>
+                        💰 Salary Forecaster
+                        <span>AI</span>
+                  </h1>
+                  <p>Enter job & company attributes instant prediction via FastAPI inference</p>
+            </div>
+
+            <div class="form-container">
+                  <form id="predictionForm">
+                        <div class="grid-2col">
+                              <!-- job_title (text) -->
+                              <div class="input-group">
+                                    <label>📌 Job Title </label>
+                                    <input type="text" id="job_title" name="job_title"
+                                          placeholder="e.g. Data Scientist, Software Engineer"
+                                          value="Machine Learning Engineer" required>
+                              </div>
+
+                              <!-- experience_years (numeric) -->
+                              <div class="input-group">
+                                    <label>⏱️ Experience (years)</label>
+                                    <input type="number" id="experience_years" name="experience_years" step="0.5"
+                                          value="4.5" min="0" max="50" required>
+                              </div>
+
+                              <!-- education_level (dropdown) -->
+                              <div class="input-group">
+                                    <label>🎓 Education Level</label>
+                                    <select id="education_level" required>
+                                          <option value="High School">High School</option>
+                                          <option value="Diploma">Diploma</option>
+                                          <option value="Bachelor" selected>Bachelor</option>
+                                          <option value="Master">Master</option>
+                                          <option value="PhD">PhD</option>
+                                    </select>
+                              </div>
+
+                              <!-- skills_count (number) -->
+                              <div class="input-group">
+                                    <label>🛠️ Skills Count</label>
+                                    <input type="number" id="skills_count" name="skills_count" value="8" min="1"
+                                          max="50" required>
+                              </div>
+
+                              <!-- industry -->
+                              <div class="input-group">
+                                    <label>🏭 Industry</label>
+                                    <input type="text" id="industry" name="industry"
+                                          placeholder="e.g. Tech, Finance, Healthcare" value="Artificial Intelligence"
+                                          required>
+                              </div>
+
+                              <!-- company_size (dropdown) -->
+                              <div class="input-group">
+                                    <label>🏢 Company Size</label>
+                                    <select id="company_size" required>
+                                          <option value="Startup">Startup</option>
+                                          <option value="Small">Small</option>
+                                          <option value="Medium" selected>Medium</option>
+                                          <option value="Large">Large</option>
+                                          <option value="Enterprise">Enterprise</option>
+                                    </select>
+                              </div>
+
+                              <!-- location -->
+                              <div class="input-group">
+                                    <label>📍 Location</label>
+                                    <input type="text" id="location" name="location"
+                                          placeholder="City, Country or region" value="San Francisco, CA" required>
+                              </div>
+
+                              <!-- remote_work (Yes/No/Hybrid) -->
+                              <div class="input-group">
+                                    <label>💻 Remote Work</label>
+                                    <select id="remote_work" required>
+                                          <option value="Yes">Yes</option>
+                                          <option value="No">No</option>
+                                          <option value="Hybrid">Hybrid</option>
+                                    </select>
+                              </div>
+
+                              <!-- certifications (text, can be empty but required for structure) -->
+                              <div class="input-group full-width">
+                                    <label>📜 Certifications</label>
+                                    <input type="number" id="certifications" name="certifications"
+                                          placeholder="e.g. 1, 2">
+                              </div>
+                        </div>
+                  </form>
+            </div>
+
+            <!-- result & action panel -->
+            <div class="result-area" id="resultPanel">
+                  <div class="salary-box">
+                        <div class="salary-label">📊 estimated annual salary</div>
+                        <div class="salary-value" id="salaryDisplay"><small>USD</small></div>
+                  </div>
+                  <button class="btn-predict" id="predictBtn">
+                        Predict Salary
+                  </button>
+                  <div id="statusMessage" class="status-msg">Ready · fill details & predict</div>
+            </div>
+            <footer>
+                  ⚡ FastAPI endpoint: /predict · Features: job_title, experience_years, education_level, skills_count,
+                  industry, company_size, location, remote_work, certifications
+            </footer>
+      </div>
+
+      <script>
+            (function () {
+                  // API endpoint configuration — change URL if your FastAPI runs on different port/host
+                  // Default expects http://127.0.0.1:8000/predict
+                  const API_BASE_URL = "http://127.0.0.1:8000";
+                  const PREDICT_ENDPOINT = "/predict";
+
+                  // DOM elements
+                  const predictBtn = document.getElementById('predictBtn');
+                  const salaryDisplaySpan = document.getElementById('salaryDisplay');
+                  const statusMsgDiv = document.getElementById('statusMessage');
+
+                  // Helper: format salary with commas and currency
+                  function formatSalary(amount) {
+                        if (amount === undefined || amount === null || isNaN(amount)) return '—';
+                        const num = Number(amount);
+                        if (isNaN(num)) return '—';
+                        // round to nearest integer for USD presentation
+                        const rounded = Math.round(num);
+                        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(rounded);
+                  }
+
+                  // clear any previous error styles
+                  function setStatus(message, isError = false) {
+                        statusMsgDiv.innerText = message;
+                        if (isError) {
+                              statusMsgDiv.classList.add('error-msg');
+                        } else {
+                              statusMsgDiv.classList.remove('error-msg');
+                        }
+                  }
+
+                  // gathering payload from form
+                  function collectFormData() {
+                        // job_title
+                        const jobTitle = document.getElementById('job_title').value.trim();
+                        if (!jobTitle) {
+                              throw new Error('Job title is required');
+                        }
+
+                        // experience_years
+                        let expYears = parseFloat(document.getElementById('experience_years').value);
+                        if (isNaN(expYears)) expYears = 0;
+                        if (expYears < 0) expYears = 0;
+
+                        // education_level (select)
+                        const educationLevel = document.getElementById('education_level').value;
+
+                        // skills_count
+                        let skillsCount = parseInt(document.getElementById('skills_count').value, 10);
+                        if (isNaN(skillsCount)) skillsCount = 0;
+                        if (skillsCount < 0) skillsCount = 0;
+
+                        // industry
+                        const industry = document.getElementById('industry').value.trim();
+                        if (!industry) {
+                              throw new Error('Industry is required');
+                        }
+
+                        // company_size
+                        const companySize = document.getElementById('company_size').value;
+
+                        // location
+                        const location = document.getElementById('location').value.trim();
+                        if (!location) {
+                              throw new Error('Location is required');
+                        }
+
+                        // remote_work
+                        const remoteWork = document.getElementById('remote_work').value;
+
+                        // certifications
+                        let certifications = document.getElementById('certifications').value.trim();
+                        if (certifications === "") {
+                              // you may also send an empty string; keep as is
+                              certifications = "";
+                        }
+
+                        // return object exactly matching the expected feature set
+                        return {
+                              job_title: jobTitle,
+                              experience_years: expYears,
+                              education_level: educationLevel,
+                              skills_count: skillsCount,
+                              industry: industry,
+                              company_size: companySize,
+                              location: location,
+                              remote_work: remoteWork,
+                              certifications: certifications
+                        };
+                  }
+
+                  // core predict function
+                  async function callPredictionAPI() {
+                        // reset status to loading style
+                        setStatus("🔄 Sending request to FastAPI...", false);
+                        // change salary display to loading state
+                        salaryDisplaySpan.innerHTML = "⏳<small> loading</small>";
+
+                        let payload;
+                        try {
+                              payload = collectFormData();
+                        } catch (err) {
+                              setStatus(`⚠️ Validation error: ${err.message}`, true);
+                              salaryDisplaySpan.innerHTML = "<small>USD</small>";
+                              return;
+                        }
+
+                        // Construct full URL
+                        const url = `${API_BASE_URL}${PREDICT_ENDPOINT}`;
+
+                        try {
+                              const controller = new AbortController();
+                              const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 seconds timeout
+
+                              const response = await fetch(url, {
+                                    method: 'POST',
+                                    headers: {
+                                          'Content-Type': 'application/json',
+                                          'Accept': 'application/json',
+                                    },
+                                    body: JSON.stringify(payload),
+                                    signal: controller.signal
+                              });
+
+                              clearTimeout(timeoutId);
+
+                              // handle non-ok responses
+                              if (!response.ok) {
+                                    let errorDetail = `HTTP ${response.status}`;
+                                    try {
+                                          const errorData = await response.json();
+                                          if (errorData.detail) errorDetail = errorData.detail;
+                                          else if (errorData.message) errorDetail = errorData.message;
+                                          else errorDetail = JSON.stringify(errorData);
+                                    } catch (e) {
+                                          errorDetail = `Server error (${response.status})`;
+                                    }
+                                    throw new Error(errorDetail);
+                              }
+
+                              const data = await response.json();
+                              // We expect response contains predicted_salary or salary or prediction field
+                              // Usually FastAPI returns { "predicted_salary": 125000 } or { "salary": 98000 }.
+                              // We'll handle multiple possible keys for flexibility: predicted_salary, salary, prediction
+                              let salaryValue = null;
+                              if (data && typeof data === 'object') {
+                                    if (data.predicted_salary !== undefined) salaryValue = data.predicted_salary;
+                                    else if (data.salary !== undefined) salaryValue = data.salary;
+                                    else if (data.prediction !== undefined) salaryValue = data.prediction;
+                                    else if (data.estimated_salary !== undefined) salaryValue = data.estimated_salary;
+                                    else {
+                                          // fallback: maybe the API returns just a number? try data.value? 
+                                          // if direct number? check numeric
+                                          const firstVal = Object.values(data)[0];
+                                          if (typeof firstVal === 'number') salaryValue = firstVal;
+                                          else throw new Error("Unexpected API response format: missing salary field");
+                                    }
+                              } else if (typeof data === 'number') {
+                                    salaryValue = data;
+                              } else {
+                                    throw new Error("Invalid response from server");
+                              }
+
+                              if (salaryValue === null || isNaN(Number(salaryValue))) {
+                                    throw new Error(`Received non-numeric salary: ${salaryValue}`);
+                              }
+
+                              const formatted = formatSalary(salaryValue);
+                              salaryDisplaySpan.innerHTML = `${formatted}`;
+                              setStatus(`✅ Prediction success! estimated ${formatted}`, false);
+                        } catch (err) {
+                              console.error("Prediction API error:", err);
+                              let friendlyMsg = "";
+                              if (err.name === 'AbortError') {
+                                    friendlyMsg = "⏱️ Request timeout. Is FastAPI server running at " + API_BASE_URL + "?";
+                              } else if (err.message.includes("Failed to fetch") || err.message.includes("NetworkError")) {
+                                    friendlyMsg = "🌐 Cannot reach FastAPI server. Make sure server is running on http://127.0.0.1:8000 and CORS is enabled.";
+                              } else {
+                                    friendlyMsg = `❌ Error: ${err.message}`;
+                              }
+                              setStatus(friendlyMsg, true);
+                              salaryDisplaySpan.innerHTML = "<small>USD</small>";
+                        }
+                  }
+
+                  // attach event to button
+                  predictBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        callPredictionAPI();
+                  });
+
+                  // optional: allow pressing Enter on any field triggers prediction? we'll not overcomplicate, but nice to add
+                  const form = document.getElementById('predictionForm');
+                  form.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        callPredictionAPI();
+                  });
+
+                  // small initial hint: show demo pre-filled values are ready
+                  setStatus("✔️ Form ready click 'Predict Salary'", false);
+            })();
+      </script>
+</body>
+
+</html>

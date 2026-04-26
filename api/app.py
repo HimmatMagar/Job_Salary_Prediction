@@ -18,7 +18,7 @@ app.add_middleware(
 
 class UserInput(BaseModel):
       job_title: Annotated[object, Field(..., description="Job title you want to work")]
-      experience_years: Annotated[int, Field(..., description="Experience you have")]
+      experience_years: Annotated[float, Field(..., description="Experience you have")]
       education_level: Annotated[Literal["High School", "Diploma", "Bachelor", "Master", "PhD"],
                                  Field(..., description="Your Educations level")]
       skills_count: Annotated[int, Field(..., description="How many skills do you have")]
