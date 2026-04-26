@@ -55,3 +55,25 @@ class ConfigurationManager:
             )
 
             return data_transformation_config
+      
+
+      def get_model_building_config(self) -> ModelBuilingConfig:
+            config = self.config.model_building
+
+            create_directory([config.root_dir])
+            params = self.params.params
+
+            model_building_config = ModelBuilingConfig(
+                  root_dir = config.root_dir,
+                  xtrain_data = config.xtrain_data,
+                  ytrain_data = config.ytrain_data,
+                  model = config.model,
+                  n_estimators = params.n_estimators,
+                  max_depth = params.max_depth, 
+                  subsample = params.subsample,
+                  colsample_bytree =  params.colsample_bytree,
+                  reg_alpha = params.reg_alpha,
+                  reg_lambda = params.reg_lambda
+            )
+
+            return model_building_config
