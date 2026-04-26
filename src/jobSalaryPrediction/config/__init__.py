@@ -61,7 +61,7 @@ class ConfigurationManager:
             config = self.config.model_building
 
             create_directory([config.root_dir])
-            params = self.params.params
+            params = self.params.model_params
 
             model_building_config = ModelBuilingConfig(
                   root_dir = config.root_dir,

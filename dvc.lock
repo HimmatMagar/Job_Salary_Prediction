@@ -1,0 +1,154 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: python src/jobSalaryPrediction/pipeline/data_ingestion_pipeline.py
+    deps:
+    - path: config/config.yaml
+      hash: md5
+      md5: 7481eb1bc79707a86e86a00328fbe488
+      size: 1038
+    - path: src/jobSalaryPrediction/components/data_ingestion.py
+      hash: md5
+      md5: 3b4505c8209a17f67cff880fbc455ca2
+      size: 1034
+    outs:
+    - path: artifact/data_ingestion/data.zip
+      hash: md5
+      md5: c8e645f0e3260ea168e34920967a6285
+      size: 3015144
+    - path: artifact/data_ingestion/job_salary_prediction_dataset.csv
+      hash: md5
+      md5: 5aa080a82b2557b3ec963e9b3644ce6c
+      size: 17139005
+  data_validation:
+    cmd: python src/jobSalaryPrediction/pipeline/data_validation_pipeline.py
+    deps:
+    - path: artifact/data_ingestion/job_salary_prediction_dataset.csv
+      hash: md5
+      md5: 5aa080a82b2557b3ec963e9b3644ce6c
+      size: 17139005
+    - path: config/config.yaml
+      hash: md5
+      md5: 7481eb1bc79707a86e86a00328fbe488
+      size: 1038
+    - path: config/schema.yaml
+      hash: md5
+      md5: b07b8a9143d21bb064513aa9898b8cca
+      size: 269
+    - path: src/jobSalaryPrediction/components/data_validation.py
+      hash: md5
+      md5: 49d9ea0b99f0054a22f203b2dced72b9
+      size: 1108
+    outs:
+    - path: artifact/data_validation/status.txt
+      hash: md5
+      md5: 86e6a2f694c57a675b3e2da6b95ff9ba
+      size: 23
+  data_transformation:
+    cmd: python src/jobSalaryPrediction/pipeline/data_transformation_pipeline.py
+    deps:
+    - path: artifact/data_ingestion/job_salary_prediction_dataset.csv
+      hash: md5
+      md5: 5aa080a82b2557b3ec963e9b3644ce6c
+      size: 17139005
+    - path: config/config.yaml
+      hash: md5
+      md5: 7481eb1bc79707a86e86a00328fbe488
+      size: 1038
+    - path: src/jobSalaryPrediction/components/data_transformation.py
+      hash: md5
+      md5: 913e73166cfc04260e5be4d89cadd98f
+      size: 2586
+    outs:
+    - path: artifact/data_transformation/pipeline.pkl
+      hash: md5
+      md5: 0ef202579d0bc46a3ffa51b8367184fe
+      size: 5332
+    - path: artifact/data_transformation/x_train.pkl
+      hash: md5
+      md5: f39e40611a49ec5b5a8747592ab69e96
+      size: 17469420
+    - path: artifact/data_transformation/x_val.pkl
+      hash: md5
+      md5: ac0894018b24ded73778e9b66bcfcb39
+      size: 7483212
+    - path: artifact/data_transformation/y_train.pkl
+      hash: md5
+      md5: 89c2446a74089a0777efe74601399d35
+      size: 5600819
+    - path: artifact/data_transformation/y_val.pkl
+      hash: md5
+      md5: 85482c91129ea7406ca640228e8b1e56
+      size: 2400819
+  model_building:
+    cmd: python src/jobSalaryPrediction/pipeline/model_building_pipeline.py
+    deps:
+    - path: artifact/data_transformation/x_train.pkl
+      hash: md5
+      md5: f39e40611a49ec5b5a8747592ab69e96
+      size: 17469420
+    - path: artifact/data_transformation/y_train.pkl
+      hash: md5
+      md5: 89c2446a74089a0777efe74601399d35
+      size: 5600819
+    - path: config/config.yaml
+      hash: md5
+      md5: 7481eb1bc79707a86e86a00328fbe488
+      size: 1038
+    - path: config/params.yaml
+      hash: md5
+      md5: 0e3b0ba76ff7b682787366b5f14ff030
+      size: 142
+    - path: src/jobSalaryPrediction/components/model_building.py
+      hash: md5
+      md5: b80ff41dbcd77c9f8468fa069bbba71e
+      size: 1239
+    params:
+      config/params.yaml:
+        model_params.colsample_bytree: 0.8
+        model_params.max_depth: 6
+        model_params.n_estimators: 500
+        model_params.reg_alpha: 0.1
+        model_params.reg_lambda: 1.0
+        model_params.subsample: 0.8
+    outs:
+    - path: artifact/build_model/model.pkl
+      hash: md5
+      md5: b57d33578176500dd8155e0513c3239d
+      size: 2488661
+    - path: artifact/model_id.txt
+      hash: md5
+      md5: db15369a081c5e111f85be24205723f7
+      size: 34
+    - path: artifact/run_id.txt
+      hash: md5
+      md5: c6a0cd629643f055826d775afc7c75c0
+      size: 32
+  model_evaluation:
+    cmd: python src/jobSalaryPrediction/pipeline/model_evaluation_pipeline.py
+    deps:
+    - path: artifact/build_model/model.pkl
+      hash: md5
+      md5: b57d33578176500dd8155e0513c3239d
+      size: 2488661
+    - path: artifact/data_transformation/x_val.pkl
+      hash: md5
+      md5: ac0894018b24ded73778e9b66bcfcb39
+      size: 7483212
+    - path: artifact/data_transformation/y_val.pkl
+      hash: md5
+      md5: 85482c91129ea7406ca640228e8b1e56
+      size: 2400819
+    - path: config/config.yaml
+      hash: md5
+      md5: 7481eb1bc79707a86e86a00328fbe488
+      size: 1038
+    - path: src/jobSalaryPrediction/components/model_evaluation.py
+      hash: md5
+      md5: c4d0da45f8f7c76fb677ae76e1402a69
+      size: 1056
+    outs:
+    - path: artifact/model_evaluation/mertic.json
+      hash: md5
+      md5: a5aad74a33f787127969569351418cb9
+      size: 78

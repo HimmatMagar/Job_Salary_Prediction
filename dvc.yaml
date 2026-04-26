@@ -1,0 +1,68 @@
+stages:
+  data_ingestion:
+    cmd: python src/jobSalaryPrediction/pipeline/data_ingestion_pipeline.py
+    deps:
+      - src/jobSalaryPrediction/components/data_ingestion.py
+      - config/config.yaml
+    outs:
+      - artifact/data_ingestion/data.zip
+      - artifact/data_ingestion/job_salary_prediction_dataset.csv
+  
+  data_validation:
+    cmd: python src/jobSalaryPrediction/pipeline/data_validation_pipeline.py
+    deps:
+      - src/jobSalaryPrediction/components/data_validation.py
+      - artifact/data_ingestion/job_salary_prediction_dataset.csv
+      - config/config.yaml
+      - config/schema.yaml
+    outs:
+      - artifact/data_validation/status.txt
+
+
+  data_transformation:
+    cmd: python src/jobSalaryPrediction/pipeline/data_transformation_pipeline.py
+    deps: 
+      - src/jobSalaryPrediction/components/data_transformation.py
+      - artifact/data_ingestion/job_salary_prediction_dataset.csv
+      - config/config.yaml
+    outs:
+      - artifact/data_transformation/x_train.pkl
+      - artifact/data_transformation/x_val.pkl
+      - artifact/data_transformation/y_train.pkl
+      - artifact/data_transformation/y_val.pkl
+      - artifact/data_transformation/pipeline.pkl
+  
+
+  model_building:
+    cmd: python src/jobSalaryPrediction/pipeline/model_building_pipeline.py
+    deps:
+      - src/jobSalaryPrediction/components/model_building.py
+      - artifact/data_transformation/x_train.pkl
+      - artifact/data_transformation/y_train.pkl
+      - config/config.yaml
+      - config/params.yaml
+    params:
+      - config/params.yaml:
+          - model_params.n_estimators
+          - model_params.max_depth
+          - model_params.subsample
+          - model_params.colsample_bytree
+          - model_params.reg_alpha
+          - model_params.reg_lambda
+    outs:
+      - artifact/build_model/model.pkl
+      - artifact/run_id.txt
+      - artifact/model_id.txt
+  
+
+  model_evaluation:
+    cmd: python src/jobSalaryPrediction/pipeline/model_evaluation_pipeline.py
+    deps:
+      - src/jobSalaryPrediction/components/model_evaluation.py
+      - artifact/data_transformation/x_val.pkl
+      - artifact/data_transformation/y_val.pkl
+      - artifact/build_model/model.pkl
+      - config/config.yaml
+    metrics:
+      - artifact/model_evaluation/mertic.json:
+          cache: false
