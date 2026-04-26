@@ -25,14 +25,14 @@ class PredictionPipeline:
                   logger.error(f"Error loading model: {e}")
                   raise
 
-      def predict_spam(self, data):    
+      def predict_salary(self, data):    
             try:
                   # Vectorizer pipeline handles both cleaning and vectorization
                   x_data = self.pipeline.transform(data)
                   
                   # Make prediction
-                  prediction = self.model.predict(x_data)
+                  prediction = self.model.predict(x_data)[0]
                   
-                  return prediction[0]
+                  return prediction
             except Exception as e:
                   raise Exception(f"Error during prediction: {e}")
