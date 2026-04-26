@@ -36,3 +36,12 @@ class ModelBuilingConfig:
       colsample_bytree: float
       reg_alpha: float
       reg_lambda: float
+
+
+@dataclass(frozen=True)
+class ModelEvalConfig:
+      root_dir: Path
+      xval_file: Path
+      yval_file: Path
+      model: Path
+      metric: Path
