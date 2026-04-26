@@ -15,5 +15,3 @@ python-box
 pyYAML
 notebook 
 gdown
-
--e .
