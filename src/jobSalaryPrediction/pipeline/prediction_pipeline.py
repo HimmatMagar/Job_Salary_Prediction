@@ -1,5 +1,6 @@
 import mlflow
 import joblib
+from  mlflow import MlflowClient
 from jobSalaryPrediction import logger
 from jobSalaryPrediction.utils.mlflow_config import load_run_id
 
@@ -8,12 +9,19 @@ class PredictionPipeline:
       def __init__(self):
             """Initialize the prediction pipeline by loading trained model and vectorizer."""
             try:
+                  client = MlflowClient()
+                  champion = client.get_model_version_by_alias(
+                        "jobPredictionGBR",
+                        "champion"
+                  )
+
+                  run_id = champion.run_id
                   self.model = mlflow.pyfunc.load_model(
-                        "models:/jobPredictionXGB/Production"
+                        "models:/jobPredictionGBR@champion"
                   )
 
                   artifact_path = mlflow.artifacts.download_artifacts(
-                        run_id=load_run_id(),
+                        run_id=run_id,
                         artifact_path="pipeline/pipeline.pkl"
                   )
 
