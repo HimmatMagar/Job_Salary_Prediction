@@ -33,7 +33,8 @@ class BuildModelPipeline:
                         
                         logged_model = mlflow.sklearn.log_model(
                               sk_model=model_gbr,
-                              artifact_path="model"
+                              artifact_path="model",
+                              skops_trusted_types=["sklearn.tree._tree.Tree"]
                         )
                         with open("artifact/model_id.txt", "w") as f:
                               f.write(logged_model.model_id)

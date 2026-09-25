@@ -44,11 +44,10 @@ stages:
     params:
       - config/params.yaml:
           - model_params.n_estimators
+          - model_params.learning_rate
           - model_params.max_depth
-          - model_params.subsample
-          - model_params.colsample_bytree
-          - model_params.reg_alpha
-          - model_params.reg_lambda
+          - model_params.min_samples_split
+          - model_params.min_samples_leaf
     outs:
       - artifact/build_model/model.pkl
       - artifact/run_id.txt

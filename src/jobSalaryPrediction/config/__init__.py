@@ -69,7 +69,7 @@ class ConfigurationManager:
                   ytrain_data = config.ytrain_data,
                   model = config.model,
                   n_estimators = params.n_estimators,
-                  learning_rate = params.learning_reate,
+                  learning_rate = params.learning_rate,
                   max_depth = params.max_depth,
                   min_samples_split = params.min_samples_split,
                   min_samples_leaf = params.min_samples_leaf

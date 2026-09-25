@@ -53,17 +53,17 @@ stages:
       size: 17139005
     - path: config/config.yaml
       hash: md5
-      md5: 7481eb1bc79707a86e86a00328fbe488
-      size: 1038
+      md5: 9312d491ed64650363ab8127ae6886ff
+      size: 1006
     - path: src/jobSalaryPrediction/components/data_transformation.py
       hash: md5
-      md5: 913e73166cfc04260e5be4d89cadd98f
-      size: 2586
+      md5: 656d0b93fc1fca0cd5ab76ce7926a26f
+      size: 2530
     outs:
     - path: artifact/data_transformation/pipeline.pkl
       hash: md5
-      md5: 0ef202579d0bc46a3ffa51b8367184fe
-      size: 5332
+      md5: 64f00b3e61434928cd1db4e7513a669c
+      size: 4225
     - path: artifact/data_transformation/x_train.pkl
       hash: md5
       md5: f39e40611a49ec5b5a8747592ab69e96
@@ -74,12 +74,12 @@ stages:
       size: 7483212
     - path: artifact/data_transformation/y_train.pkl
       hash: md5
-      md5: 89c2446a74089a0777efe74601399d35
-      size: 5600819
+      md5: f9327e3ebf1a79a72a7c91e35cd0d5d7
+      size: 1400241
     - path: artifact/data_transformation/y_val.pkl
       hash: md5
-      md5: 85482c91129ea7406ca640228e8b1e56
-      size: 2400819
+      md5: b6c215f366ab395a35c755d85eb31bad
+      size: 600241
   model_building:
     cmd: python src/jobSalaryPrediction/pipeline/model_building_pipeline.py
     deps:
@@ -89,66 +89,65 @@ stages:
       size: 17469420
     - path: artifact/data_transformation/y_train.pkl
       hash: md5
-      md5: 89c2446a74089a0777efe74601399d35
-      size: 5600819
+      md5: f9327e3ebf1a79a72a7c91e35cd0d5d7
+      size: 1400241
     - path: config/config.yaml
       hash: md5
-      md5: 7481eb1bc79707a86e86a00328fbe488
-      size: 1038
+      md5: 9312d491ed64650363ab8127ae6886ff
+      size: 1006
     - path: config/params.yaml
       hash: md5
-      md5: 0e3b0ba76ff7b682787366b5f14ff030
-      size: 142
+      md5: d5a2c31c7a6ff0a5da30b5e75b0d1f74
+      size: 118
     - path: src/jobSalaryPrediction/components/model_building.py
       hash: md5
-      md5: b80ff41dbcd77c9f8468fa069bbba71e
-      size: 1239
+      md5: 932b990ecc1977226c06ca53ff9a92a3
+      size: 1210
     params:
       config/params.yaml:
-        model_params.colsample_bytree: 0.8
-        model_params.max_depth: 6
-        model_params.n_estimators: 500
-        model_params.reg_alpha: 0.1
-        model_params.reg_lambda: 1.0
-        model_params.subsample: 0.8
+        model_params.learning_rate: 0.1554
+        model_params.max_depth: 7
+        model_params.min_samples_leaf: 4
+        model_params.min_samples_split: 10
+        model_params.n_estimators: 90
     outs:
     - path: artifact/build_model/model.pkl
       hash: md5
-      md5: b57d33578176500dd8155e0513c3239d
-      size: 2488661
+      md5: a112370bd17bf097309a7304ff70b8b5
+      size: 1644056
     - path: artifact/model_id.txt
       hash: md5
-      md5: db15369a081c5e111f85be24205723f7
+      md5: 6e4ad92cfc9c94d1691123f62d120206
       size: 34
     - path: artifact/run_id.txt
       hash: md5
-      md5: c6a0cd629643f055826d775afc7c75c0
+      md5: f16b03ade301a68873041156f31ce21b
       size: 32
   model_evaluation:
     cmd: python src/jobSalaryPrediction/pipeline/model_evaluation_pipeline.py
     deps:
     - path: artifact/build_model/model.pkl
       hash: md5
-      md5: b57d33578176500dd8155e0513c3239d
-      size: 2488661
+      md5: a112370bd17bf097309a7304ff70b8b5
+      size: 1644056
     - path: artifact/data_transformation/x_val.pkl
       hash: md5
       md5: ac0894018b24ded73778e9b66bcfcb39
       size: 7483212
     - path: artifact/data_transformation/y_val.pkl
       hash: md5
-      md5: 85482c91129ea7406ca640228e8b1e56
-      size: 2400819
+      md5: b6c215f366ab395a35c755d85eb31bad
+      size: 600241
     - path: config/config.yaml
       hash: md5
-      md5: 7481eb1bc79707a86e86a00328fbe488
-      size: 1038
+      md5: 9312d491ed64650363ab8127ae6886ff
+      size: 1006
     - path: src/jobSalaryPrediction/components/model_evaluation.py
       hash: md5
-      md5: c4d0da45f8f7c76fb677ae76e1402a69
-      size: 1056
+      md5: 63497f29c806960ab236b8b233c69af1
+      size: 1026
     outs:
     - path: artifact/model_evaluation/mertic.json
       hash: md5
-      md5: a5aad74a33f787127969569351418cb9
-      size: 78
+      md5: 9a5012a9630fb744e678cf27313667a5
+      size: 92
