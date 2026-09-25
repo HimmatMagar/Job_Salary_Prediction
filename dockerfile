@@ -2,18 +2,16 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-ENV MLFLOW_TRACKING_URI=https://dagshub.com/HimmatMagar/Job_Salary_Prediction.mlflow
-ENV MLFLOW_EXPERIMENT_NAME=JobSalaryPrediction
+COPY pyproject.toml uv.lock ./
 
-COPY requirements.txt .
-
-RUN pip install --upgrade pip
-
-RUN pip install --no-cache-dir -r requirements.txt
+RUN uv sync --frozen --no-dev
 
 COPY . .
 
+ENV PYTHONPATH=/app/src
+
 EXPOSE 5000
 
-CMD [ "uvicorn", "app.app:app", "--host", "0.0.0.0", "--port", "5000" ]
+CMD [ "uv", "run", "uvicorn", "api.app:app", "--host", "0.0.0.0", "--port", "5000" ]
