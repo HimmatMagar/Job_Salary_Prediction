@@ -35,8 +35,8 @@ class DataTransform:
       def split_data(self) -> None:
             df = pd.read_csv(self.config.data_path)
 
-            x = df.drop(columns="salary")
-            y = df['salary']
+            x = df.iloc[:, 0:9].values
+            y = df.iloc[:, 9].values
             X_train, X_val, y_train, y_val = train_test_split(
                   x, y,
                   test_size=0.3,
