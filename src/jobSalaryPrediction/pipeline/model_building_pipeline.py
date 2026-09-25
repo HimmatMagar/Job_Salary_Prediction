@@ -18,22 +18,21 @@ class BuildModelPipeline:
 
             configure_mlflow(experiment_name="JobSalaryPrediction")
 
-            with mlflow.start_run(run_name="XGB-Model") as run:
+            with mlflow.start_run(run_name="GBR-Model") as run:
                   try:
                         mlflow.log_params({
                               "n_estimators": model_build_config.n_estimators,
-                              "max_depth": model_build_config.max_depth, 
-                              "subsample": model_build_config.subsample,
-                              "colsample_bytree":  model_build_config.colsample_bytree,
-                              "reg_alpha": model_build_config.reg_alpha,
-                              "reg_lambda": model_build_config.reg_lambda
+                              "learning_rate": model_build_config.learning_rate,
+                              "max_depth": model_build_config.max_depth,
+                              "min_samples_split": model_build_config.min_samples_split,
+                              "min_samples_leaf": model_build_config.min_samples_leaf
                         })
                         model = BuildModel(model_build_config)
-                        model_xgb = model.build_model_architecture()
-                        print(f"model built: {model_xgb}")
+                        model_gbr = model.build_model_architecture()
+                        print(f"model built: {model_gbr}")
                         
                         logged_model = mlflow.sklearn.log_model(
-                              sk_model=model_xgb,
+                              sk_model=model_gbr,
                               artifact_path="model"
                         )
                         with open("artifact/model_id.txt", "w") as f:

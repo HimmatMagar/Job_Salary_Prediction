@@ -1,7 +1,7 @@
 import os
 import joblib
 from pathlib import Path
-from xgboost import XGBRegressor
+from sklearn.ensemble import GradientBoostingRegressor
 from jobSalaryPrediction.utils import *
 from jobSalaryPrediction import logger
 from jobSalaryPrediction.entity import ModelBuilingConfig
@@ -16,13 +16,12 @@ class BuildModel:
             xtrain = load_file(Path(self.config.xtrain_data))
             ytrain = load_file(Path(self.config.ytrain_data))
 
-            models = XGBRegressor(
+            models = GradientBoostingRegressor(
                   n_estimators = self.config.n_estimators,
+                  learning_rate = self.config.learning_rate,
                   max_depth = self.config.max_depth,
-                  subsample = self.config.subsample,
-                  colsample_bytree = self.config.colsample_bytree,
-                  reg_alpha = self.config.reg_alpha,
-                  reg_lambda = self.config.reg_lambda
+                  min_samples_split = self.config.min_samples_split,
+                  min_samples_leaf = self.config.min_samples_leaf
             )
             models.fit(xtrain, ytrain)
 

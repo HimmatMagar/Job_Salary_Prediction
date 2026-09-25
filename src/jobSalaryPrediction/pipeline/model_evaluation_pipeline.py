@@ -37,7 +37,7 @@ class ModelEvalPipeline:
                   if metrics["r2"] >= r2_Threshold:
                         model = mlflow.register_model(
                               model_uri=f"models:/{model_id}",
-                              name = "jobPredictionXGB"
+                              name = "jobPredictionGBR"
                         )
                         logger.info(f"Registered — accuracy: {metrics['r2']}")
 

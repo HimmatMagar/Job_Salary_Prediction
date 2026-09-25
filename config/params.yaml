@@ -1,7 +1,6 @@
 model_params: 
-  n_estimators: 500
-  max_depth: 6     
-  subsample: 0.8
-  colsample_bytree: 0.8
-  reg_alpha: 0.1     
-  reg_lambda: 1.0 
+  n_estimators: 90
+  learning_rate: 0.1554
+  max_depth: 7
+  min_samples_split: 10
+  min_samples_leaf: 4

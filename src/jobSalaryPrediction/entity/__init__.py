@@ -31,12 +31,10 @@ class ModelBuilingConfig:
       ytrain_data: Path
       model: str
       n_estimators: int
+      learning_rate: float
       max_depth: int 
-      subsample: float
-      colsample_bytree: float
-      reg_alpha: float
-      reg_lambda: float
-
+      min_samples_split: int
+      min_samples_leaf: int
 
 @dataclass(frozen=True)
 class ModelEvalConfig:
